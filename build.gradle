@@ -36,7 +36,7 @@ dependencies {
 
 task remote_test(type: Test) {
     useJUnitPlatform {
-        includeTags("remote")
+        includeTags("simple")
     }
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
