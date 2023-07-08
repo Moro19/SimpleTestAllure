@@ -6,43 +6,62 @@ plugins {
 repositories {
     mavenCentral()
 }
-def allureVersion = "2.19.0",
-    slf4jVersion = "1.7.32"
 
 allure {
     report {
-        version.set(allureVersion)
+        version.set("2.19.0")
     }
     adapter { // отвечает за появление папочки build/allure-results
         aspectjWeaver.set(true) //обработка аннотации @Step
         frameworks {
             junit5 { //название фреймворка
-                adapterVersion.set(allureVersion) //версия интеграции фреймворка и Allure
+                adapterVersion.set("2.19.0") //версия интеграции фреймворка и Allure
             }
         }
     }
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 dependencies {
-    testImplementation(
-            "com.codeborne:selenide:6.15.0",
-            "org.junit.jupiter:junit-jupiter:5.9.2",
-            "io.qameta.allure:allure-selenide:$allureVersion",
-            "org.slf4j:slf4j-simple:2.0.6",
-            "com.github.javafaker:javafaker:1.0.2"
+    testImplementation (
+            "com.github.javafaker:javafaker:1.0.2",
+            "com.codeborne:selenide:6.9.0",
+            "io.qameta.allure:allure-selenide:2.19.0",
+            "org.junit.jupiter:junit-jupiter:5.9.1",
+            "org.slf4j:slf4j-simple:1.7.32"
     )
 }
 
+tasks.withType(Test) {
+    useJUnitPlatform()
 
-task remote_test(type: Test) {
+    testLogging {
+        lifecycle {
+            events "started", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
+        }
+    }
+}
+
+task smoke_tests(type: Test) {
     useJUnitPlatform {
-        includeTags("simple")
+        includeTags("smoke")
     }
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
-    }
+}
 
-    test {
-        useJUnitPlatform()
+help {
+    doFirst {
+        println ""
+        println "************************************************************************ "
+        println "***                                                                  *** "
+        println "*** Welcome to https://github.com/qa-guru/demoqa-test-16!            *** "
+        println "***                                                                  *** "
+        println "*** ./gradlew help                                                   *** "
+        println "***                                                                  *** "
+        println "************************************************************************ "
+        println ""
     }
 }
