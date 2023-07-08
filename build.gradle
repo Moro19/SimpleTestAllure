@@ -27,6 +27,7 @@ tasks.withType(JavaCompile) {
 
 dependencies {
     testImplementation (
+            "org.aspectj:aspectjweaver:1.9.5",
             "com.github.javafaker:javafaker:1.0.2",
             "com.codeborne:selenide:6.9.0",
             "io.qameta.allure:allure-selenide:2.19.0",
